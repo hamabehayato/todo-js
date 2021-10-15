@@ -5,15 +5,24 @@ const onClickAdd = () => {
   const inputText = document.getElementById("add_text").value;
   document.getElementById("add_text").value = "";
 
+  createIncompleteList(inputText);
+};
+
+// 未完了リストから指定の要素を削除する関数
+const deleteFromIncompleteList = (target) => {
+  document.getElementById("incomplete_list").removeChild(target);
+};
+
+//未完了リストに追加する関数
+const createIncompleteList = (text) => {
   // liタグ生成
-  alert(inputText);
   const li = document.createElement("li");
   li.className = "list_row";
 
   // divタグ生成
   const div = document.createElement("div");
   div.className = "todo";
-  div.innerText = "・" + inputText;
+  div.innerText = text;
 
   // 未完了リストに追加
   document.getElementById("incomplete_list").appendChild(li);
@@ -46,28 +55,13 @@ const onClickAdd = () => {
     const returnButton = document.createElement("button");
     returnButton.innerText = "戻す";
     returnButton.addEventListener("click", () => {
-      // 未完了リストに戻す要素
-      const incompleteTarget = returnButton.parentNode;
-      const text = incompleteTarget.firstElementChild.innerText;
+      // 押されたボタンの親タグ(li)を削除
+      const dleteTarget = returnButton.parentNode;
+      document.getElementById("complete_list").removeChild(dleteTarget);
 
-      // incompleteTarget以下を初期化
-      incompleteTarget.textContent = null;
-
-      // liタグを生成
-      const li = document.createElement("li");
-      li.className = "list_row";
-
-      // divタグを生成し、liタグ以下に移動
-      const div = document.createElement("div");
-      div.innerText = text;
-      div.className = "todo";
-      li.appendChild(div);
-
-      // 未完了リストに生成したliタグを移動
-      document.getElementById("incomplete_list").appendChild(li);
+      createIncompleteList(text);
     });
     li.appendChild(returnButton);
-
     // 完了タグに生成したliタグを移動
     document.getElementById("complete_list").appendChild(li);
   });
@@ -83,11 +77,6 @@ const onClickAdd = () => {
   li.appendChild(div);
   li.appendChild(completeButton);
   li.appendChild(deleteButton);
-};
-
-// 未完了リストから指定の要素を削除する関数
-const deleteFromIncompleteList = (target) => {
-  document.getElementById("incomplete_list").removeChild(target);
 };
 
 document
